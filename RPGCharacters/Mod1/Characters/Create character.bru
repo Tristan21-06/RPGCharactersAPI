@@ -1,0 +1,19 @@
+meta {
+  name: Create character
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://rpgcharacters.local/personnage
+  body: formUrlEncoded
+  auth: inherit
+}
+
+body:form-urlencoded {
+  name: Titi
+  strength: 5
+  defense: 4
+  hp: 12
+  type_id: 2
+}

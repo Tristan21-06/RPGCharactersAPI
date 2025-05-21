@@ -1,0 +1,15 @@
+meta {
+  name: Delete type
+  type: http
+  seq: 4
+}
+
+delete {
+  url: http://rpgcharacters.local/type/{{id}}
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  id: 5
+}

@@ -1,0 +1,15 @@
+meta {
+  name: One character
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://rpgcharacters.local/personnage/{{name}}
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  name: Toto
+}

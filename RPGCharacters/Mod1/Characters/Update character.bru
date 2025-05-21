@@ -1,0 +1,19 @@
+meta {
+  name: Update character
+  type: http
+  seq: 2
+}
+
+patch {
+  url: http://rpgcharacters.local/personnage/{{name}}
+  body: formUrlEncoded
+  auth: inherit
+}
+
+body:form-urlencoded {
+  name: Tata
+}
+
+vars:pre-request {
+  name: Titi
+}
