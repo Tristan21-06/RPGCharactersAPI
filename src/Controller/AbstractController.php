@@ -44,7 +44,7 @@ abstract class AbstractController
         $this->jsonResponse($entity->toArray());
     }
 
-    public function new(): void
+    public function create(): void
     {
         try {
             $entity = $this->repository->populate($_REQUEST);
