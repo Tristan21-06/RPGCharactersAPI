@@ -2,82 +2,99 @@
 
 ## Enoncé
 
-api demandé   s'agit  de crée la liste  des personnage d'un jeu vidéo
-table bdd type
-name : string
-avatar:  img (path)
+Créer un api sécurisée par token pour la création, la modification et la suppression. 
+Ces tokens sont stockés en base de données avec les droits par token. 
+Cette API, sous format JSON, doit pouvoir fournir :
+- Une liste de personnages définis par leur nom, leur type, leur force, leur défense, leurs pv et leur avatar (facultatif)
+- Une liste de types définis leur nom
 
-table  token
+Codes de retours :
+- Bon token : 200
+- Mauvais token ou sans token : 401
+- Non trouvé (modification/suppression) : 404
 
-table bdd personnage
-nom : personnage  string
-type: mage, cav ect  relations
-force: int
-def : int
-pv: int
-avatar :  img (path stocker)
+Bonus: Rajouter au moins un quota
 
-objectif :  lister les personnages "/"
-bdd personnages
-personnage/{username} :  détails  des informations (attentions  le username doit être unique)
-non  trouver -> status 404
-types
-type/{id}
-pour afficher le détails
+!!!!!!!!!!!!  INTERDICTION D'UTILISER UN FRAMEWORK (PHP natif) !!!!!!!!!!!!
 
-bdd  utilisateur :
-name:   string
-password: string/hash
+- Routes (* = token requis)
+```
+Personnage :
+- Liste : /personnages                          GET
+- Detail : /personnage/{name}                   GET
+- Créer* : /personnage/create                   POST
+- Modifier* : /personnage/update/{name}         PATCH
+- Supprimer* : /personnage/{name}               DELETE
 
-bdd token :
-token:  string
-can_create: bool
-can_update: bool
-can_delete: bool
+Type :
+- Liste : /types                                GET
+- Detail : /type/{name}                         GET
+- Créer* : /type/create                         POST
+- Modifier* : /type/update/{name}               PATCH
+- Supprimer* : /type/{name}                     DELETE
+```
+- Base de données
+```
+Table 'types' :
+- id INT PRIMARY
+- name VARCHAR(50) NOT NULL
 
-Post:
+Table 'characters' :
+- id INT PRIMARY
+- name VARCHAR(100) NOT NULL UNIQUE
+- type_id INT NOT NULL REFERENCES types(id)
+- strength INT NOT NULL
+- defense INT NOT NULL
+- hp INT NOT NULL
+- avatar_path TEXT NOT NULL
 
-personnage/create
-creation personnnage
+Table 'users' :
+- id INT PRIMARY
+- name VARCHAR(100) NOT NULL UNIQUE
+- password VARCHAR(255) NOT NULL
 
-put/patch :
-personnage/update/{id}
-edition
-
-DELETE :  suppressions   token
-
-ADMIN  :  create update  supprimer
-
-MODERATEUR  : modifier  ou supprimé
-MODERATEUR2 : créer ou supprimé
-
-
-AFFICHAGE : public  (pas de token a géré ou de droit)
-POUR les autres  method  il faudra un token d'authorisation
-NO FRAMEWORK
-
-si je fais une action  avec le mauvais  ou sans  token qui m'est pas attribué -> error 401
-si  réussis  success 200
-
-Précisions  IMPORTANT  c'est  un api  !  retour  JSON
-
-bonus :  rajouté  un quotas  example  ->  maximun  creation  ect 
-
-livrable fichier .sql, collection bruno et github public
+Table 'tokens' :
+- id INT PRIMARY
+- user_id INT NOT NULL
+- access_token VARCHAR(255) NOT NULL UNIQUE
+- can_create TINYINT(1) DEFAULT 0
+- can_update TINYINT(1) DEFAULT 0
+- can_delete TINYINT(1) DEFAULT 0
+```
+- Exemple
+  - Créer des utilisateurs ADMIN, MODERATEUR1, MODERATEUR2
+    - ADMIN (admin) : créer, modifier, supprimer
+    - MODERATEUR1 (mod1) : modifier, supprimer
+    - MODERATEUR2 (mod2) : créer, supprimer
 
 ## Rendu
 
-RPGCharacters : collection bruno
-rpgcharacters.sql : dump sql
+- Lien Github
+- RPGCharacters : collection bruno
+- dump.sql
 
-## Projet développé sur
+## Dépendances requises
 
-- php 8.2.23
-- composer 2.8.3
 - apache 2.4.58
+- composer 2.8.3
+- mysql 8.0.42
+- php 8.2.23
 
 ## Setup
 
-- ``composer dump-autoload``
+- Cloner le projet dans un environnement Apache (XAMPP ou local)
 - Copier le ficher ``.env`` dans un fichier ``.env.local`` à la racine du project et remplir les champs correspondants
-- 
+- ``composer dump-autoload``
+- Importer la base de données : 
+  - En ligne de commande : ``mysql -u <utilisateur> -p<mot de passe> <base de données> < dump.sql``
+  - Par phpmyadmin : Sélectionner la base de données -> Importer -> Glisser/Déposer le fichier dump.sql
+
+## Informations
+
+Dans ce projet, les utilisateurs ne sont pas utilisés mais les tokens liés le sont.
+Dans le dump.sql : 
+- La base de données est nommée ``rpgcharacters``
+- Des utilisateurs sont créés par défaut avec les mots de passe identiques aux noms d'utilisateur :
+  - admin
+  - mod1
+  - mod2
