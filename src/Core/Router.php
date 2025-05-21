@@ -3,7 +3,12 @@
 namespace App\Core;
 
 class Router {
-    private $routes = [];
+    private array $routes = [];
+    private Auth $auth;
+    public function __construct()
+    {
+        $this->auth = new Auth();
+    }
 
     public function get($uri, $action) {
         $this->addRoute('GET', $uri, $action);
@@ -46,6 +51,13 @@ class Router {
                 $controllerAction = explode('@', $route['action']);
                 $controllerName = $controllerAction[0];
                 $methodName = $controllerAction[1];
+
+                if (!$this->auth->checkAuthorization($methodName)) {
+                    http_response_code(401);
+                    echo json_encode(['error' => 'Unknown token or action not authorized']);
+                    die;
+                }
+
                 $controller = new $controllerName();
                 array_shift($matches); // remove full match
                 return call_user_func_array([$controller, $methodName], $matches);
@@ -60,4 +72,6 @@ class Router {
         $pattern = preg_replace('#\{[^\}]+\}#', '([a-zA-Z0-9_-]+)', $uri);
         return "#^" . $pattern . "$#";
     }
+
+
 }
