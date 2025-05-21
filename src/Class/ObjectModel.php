@@ -6,7 +6,6 @@ use App\Database\Db;
 
 abstract class ObjectModel
 {
-    abstract public static function getTableName(): string;
 
     public function __construct(protected ?int $id = null)
     {
@@ -17,6 +16,7 @@ abstract class ObjectModel
         return $this->id;
     }
 
+    abstract public static function getTableName(): string;
     abstract public function toArray(bool $dbQuery = false): array;
 
     public function save(): bool|\PDOStatement

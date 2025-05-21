@@ -59,7 +59,7 @@ class Router {
                 }
 
                 $controller = new $controllerName();
-                array_shift($matches); // remove full match
+                array_shift($matches);
                 return call_user_func_array([$controller, $methodName], $matches);
             }
         }

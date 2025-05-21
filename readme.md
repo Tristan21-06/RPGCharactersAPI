@@ -78,5 +78,7 @@ rpgcharacters.sql : dump sql
 
 ## Setup
 
-``composer dump-autoload``
+- ``composer dump-autoload``
+- Copier le ficher ``.env`` dans un fichier ``.env.local`` à la racine du project et remplir les champs correspondants
+- 
 

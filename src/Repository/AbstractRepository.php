@@ -23,13 +23,6 @@ abstract class AbstractRepository
         return array_map(fn($entity) => $this->populate($entity), $entities);
     }
 
-    public function findBy(array $criteria): array
-    {
-        $entities = $this->db->select($this->getTableName(), where: $criteria);
-
-        return array_map(fn($entity) => $this->populate($entity), $entities);
-    }
-
     public function findByid(int $id): ObjectModel
     {
         $entities = $this->db->select($this->getTableName(), where: ['id' => $id], limit: 1);
