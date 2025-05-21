@@ -70,15 +70,14 @@ livrable fichier .sql, collection bruno et github public
 RPGCharacters : collection bruno
 rpgcharacters.sql : dump sql
 
-## Dépendences
+## Projet développé sur
 
-- php ^8.0
-- composer
-- apache
+- php 8.2.23
+- composer 2.8.3
+- apache 2.4.58
 
 ## Setup
 
 - ``composer dump-autoload``
 - Copier le ficher ``.env`` dans un fichier ``.env.local`` à la racine du project et remplir les champs correspondants
 - 
-
