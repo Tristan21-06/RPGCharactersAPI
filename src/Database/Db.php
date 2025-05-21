@@ -37,7 +37,6 @@ class Db
 
     public function update(string $table, array $data, array $where = []): bool|\PDOStatement
     {
-        unset($data['id']);
         $updateQuery = new Update($table, $data, $where);
 
         return $this->connection->query($updateQuery->build());

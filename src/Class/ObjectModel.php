@@ -22,6 +22,7 @@ abstract class ObjectModel
     public function save(): bool|\PDOStatement
     {
         $data = $this->toArray(true);
+        unset($data['id']);
 
         $db = new Db();
 
@@ -29,7 +30,6 @@ abstract class ObjectModel
             return $db->update($this::getTableName(), $data, ['id' => $this->id]);
         }
 
-        unset($data['id']);
         $stmt = $db->insert($this::getTableName(), $data);
         $this->id = (int) $db->lestInsertId();
 

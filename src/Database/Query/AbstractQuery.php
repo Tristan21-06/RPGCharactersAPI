@@ -45,6 +45,6 @@ abstract class AbstractQuery
             array_values($data)
         );
 
-        return ' SET '. implode(' AND ', $mappedData);
+        return ' SET '. implode(', ', $mappedData);
     }
 }
