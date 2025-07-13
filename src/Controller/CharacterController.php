@@ -16,4 +16,14 @@ class CharacterController extends AbstractController
     {
         return $this->repository->findOneBy(['name' => $identifier]);
     }
+
+    protected function create(): string
+    {
+        if (empty($_REQUEST['password'])) {
+             $_REQUEST['password'] = 'password';
+        }
+        $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_DEFAULT);
+        
+        parent::create();
+    }
 }
